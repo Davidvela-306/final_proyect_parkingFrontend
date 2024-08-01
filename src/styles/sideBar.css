@@ -1,24 +1,29 @@
 .layout {
   width: 100%;
-  height: 768px;
+  height: 100vh;
 
   display: grid;
-  grid:
-    "header header header" auto
-    "leftSide body ." 1fr
-    ". . ." auto
-    / auto 1fr auto;
+  grid-template-columns: 1fr 3fr 3fr; /* Columnas de igual ancho */
+  grid-template-rows: 1fr 5fr 5fr; /* Filas de igual alto */
+  grid-template-areas: /* Agrupar elementos */
+    "header header header" /* Area de encabezado */
+    "leftSide body body" /* Area de contenido */
+    "leftSide body body"; /* Area de contenido */
 }
 
 .header {
   grid-area: header;
   background-color: aqua;
+  width: 100%;
 }
 .leftSide {
   background-color: red;
   grid-area: leftSide;
+  width: 100%;
+  overflow-y: scroll;
 }
 .body {
   background-color: #ffffff;
   grid-area: body;
+  overflow-y: scroll;
 }
