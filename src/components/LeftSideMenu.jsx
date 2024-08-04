@@ -1,9 +1,19 @@
-const LeftSideMenu = () => {
+import React from "react";
+import ButtonMenu from "./ui/ButtonMenu.jsx";
+
+function LeftSideMenu({ data }) {
   return (
-    <div>
-      <h1>LeftSideMenu</h1>
-    </div>
+    <nav>
+      <ul>
+        {data.map((item) => (
+          <ButtonMenu
+            key={item.id}
+            item={item}
+          />
+        ))}
+      </ul>
+    </nav>
   );
-};
+}
 
 export default LeftSideMenu;
