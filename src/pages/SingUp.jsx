@@ -1,5 +1,7 @@
 import { useForm } from "react-hook-form";
 import { useState } from "react";
+import { useAuth } from "../context/AuthContext";
+
 import { fetchPost } from "../helper/request_functions";
 import { baseUsuarios } from "../helper/instances_routes";
 import {
@@ -16,10 +18,11 @@ const SingUp = () => {
   const { register, handleSubmit } = useForm();
   const [mensaje, setmensaje] = useState({});
 
+  const { signup } = useAuth();
+
   const onSubmit = async (values) => {
     try {
-      const response = await fetchPost(baseUsuarios, "/registrar", values);
-      console.log(response);
+      const response = await signup(values);
       setmensaje({
         respuesta: response.data.msg,
         tipo: true,
@@ -27,7 +30,8 @@ const SingUp = () => {
     } catch (error) {
       console.error("Error:", error);
       setmensaje({
-        respuesta: error.response?.data?.msg || "Ha ocurrido un error",
+        respuesta:
+          error.response?.data?.msg || "Ha ocurrido un error, intente de nuevo",
         tipo: false,
       });
     }
@@ -68,11 +72,7 @@ const SingUp = () => {
                 {...register("email")}
               />
               <Label text="placa del vehiculo" />
-              <Input
-                type="text"
-                placeholder="AAC-424"
-                {...register("placa")}
-              />
+              <Input type="text" placeholder="AAC-424" {...register("placa")} />
               <Label text="Telefono" />
               <Input
                 type="number"

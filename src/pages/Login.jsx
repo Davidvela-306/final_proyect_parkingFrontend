@@ -1,5 +1,6 @@
 import { useForm } from "react-hook-form";
 import { useState, useEffect } from "react";
+import { useAuth } from "../context/AuthContext";
 
 import { fetchPost } from "../helper/request_functions";
 import {
@@ -21,46 +22,28 @@ import {
 const Login = () => {
   const { register, handleSubmit, watch } = useForm();
   const [mensaje, setMensaje] = useState({});
-
-  const [actualRol, setActualRol] = useState("Usuario");
+  const { signin, setRol } = useAuth();
 
   useEffect(() => {
-    const rol = watch("rol");
-    setActualRol(rol);
+    const selectedRol = watch("rol");
+    setRol(selectedRol);
   }, [watch("rol")]);
-
   const onSubmit = async (values) => {
     try {
-      let response = {};
-      if (actualRol === "Usuario") {
-        response = await fetchPost(baseUsuarios, "/login", values);
-      }
-      if (actualRol === "Administrador") {
-        response = await fetchPost(baseAdmin, "/login", values);
-      }
-      if (actualRol === "Guardia") {
-        const newGuardia = {
-          correo: values.email,
-          password: values.password,
-        };
-        console.log(newGuardia);
-        response = await fetchPost(baseGuardias, "/login", newGuardia);
-      }
-      if (!actualRol) {
-        return console.error("Rol no seleccionado");
-      }
-
-      console.log(response);
+      const response = await signin(values);
+      const { nombre } = response.data;
       setMensaje({
-        respuesta: `Bienvenido ${actualRol}`,
+        respuesta: `Bienvenido ${nombre}`,
         tipo: true,
       });
     } catch (error) {
       console.error("Error:", error);
       setMensaje({
-        respuesta: error.response?.data?.msg || "An error occurred",
+        respuesta:
+          error.response?.data?.msg || "Ha ocurrido un error, intente de nuevo",
         tipo: false,
       });
+      setRol(watch("rol"));
     }
   };
 

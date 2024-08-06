@@ -5,12 +5,14 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
+import { useAuth } from "./context/AuthContext";
 
 import { AdminLayout, GuardiaLayout, UsuarioLayout } from "./Layouts/SideBar";
 
 import Login from "./pages/Login";
 import SingUp from "./pages/SingUp";
-import Inicio from "./pages/Inicio"; "./pages/Inicio";
+import Inicio from "./pages/Inicio";
+("./pages/Inicio");
 import UsuariosAdminPage from "./pages/Administrador/UsuariosAdminPage";
 import GuardiasAdminPage from "./pages/Administrador/GuardiasAdminPage";
 import ParqueaderosAdminPage from "./pages/Administrador/ParqueaderosAdminPage";
@@ -23,13 +25,13 @@ import NotFound from "./pages/NotFound";
 import "./index.css";
 
 function App() {
+  const { isAuth } = useAuth();
   return (
     <>
       <Routes>
         <Route path="/login" element={<Login />} />
-        <Route path="/singup" element={<Navigate to="/usuarios/singup" replace />} />
         <Route path="/usuarios/singup" element={<SingUp />} />
-        <Route path="/" element={<Navigate to="/login" replace />} />
+
         {/* Admin */}
         <Route
           path="/administrador"
@@ -110,6 +112,11 @@ function App() {
           }
         />
 
+        <Route
+          path="/singup"
+          element={<Navigate to="/usuarios/singup" replace />}
+        />
+        <Route path="/" element={<Navigate to="/login" replace />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </>
