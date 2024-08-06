@@ -1,4 +1,5 @@
 import { createContext, useState, useContext, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { fetchPost } from "../helper/request_functions";
 import {
   baseUsuarios,
@@ -40,14 +41,12 @@ export function AuthProvider({ children }) {
   const signin = async (data) => {
     try {
       let response;
-      console.log("rol:", rol);
       if (rol === "Usuario") {
         response = await fetchPost(baseUsuarios, "/login", data);
       } else if (rol === "Administrador") {
         response = await fetchPost(baseAdmin, "/login", data);
       } else if (rol === "Guardia") {
         response = await fetchPost(baseGuardias, "/login", data);
-        
       } else {
         throw new Error("Rol no valido");
       }
@@ -88,8 +87,16 @@ export function AuthProvider({ children }) {
       throw error;
     }
   };
-
-  const signout = async () => {};
+  const navigate = useNavigate();
+  const signout = async () => {
+    localStorage.removeItem("userData");
+    localStorage.removeItem("token");
+    setUser(null);
+    setIsAuth(false);
+    setRol(null);
+    setToken(null);
+    navigate("/");
+  };
 
   useEffect(() => {
     loadUserFromLocalStorage();

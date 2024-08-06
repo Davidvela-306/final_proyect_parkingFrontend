@@ -1,6 +1,9 @@
 export const content = ["./src/**/*.{js,jsx,ts,tsx}"];
 export const theme = {
   extend: {
+    backgroundImage: {
+      'hero-pattern': "url('/src/assets/images/parking_hero.jpg')",
+    },
     colors: {
       celeste: {
         10: "#729ccc",

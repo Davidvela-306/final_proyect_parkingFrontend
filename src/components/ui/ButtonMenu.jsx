@@ -7,8 +7,8 @@ export const ButtonMenu = ({ item }) => {
 
   return (
     <li
-      className={`w-auto flex justify-center py-2 mx-2 my-1 rounded-md font-medium text-lg text-white cursor-pointer hover:bg-celeste-10 hover:text-azul-10 ${
-        isActive ? "bg-celeste-10 !text-azul-10" : ""
+      className={`w-auto flex justify-center py- px-2 mx-2 my-1 rounded-md font-medium text-lg text-white cursor-pointer hover:bg-celeste-10 hover:text-azul-10 ${
+        isActive ? "bg-celeste-10 " : ""
       }`}
     >
       <Link

@@ -1,3 +1,15 @@
+const GeneralNavData = [
+  {
+    id: 1,
+    title: "Iniciar Sesión",
+    path: "/singin",
+  },
+  {
+    id: 2,
+    title: "Registrarse",
+    path: "/usuarios/singup",
+  },
+];
 const adminNavData = [
   {
     id: 1,
@@ -35,4 +47,4 @@ const usuarioNavData = [
   },
 ];
 
-export { adminNavData, guardiaNavData, usuarioNavData };
+export { GeneralNavData, adminNavData, guardiaNavData, usuarioNavData };
