@@ -11,10 +11,15 @@ import {
   Card,
   Label,
   CustomLink,
+  AlertText,
 } from "../components/ui";
 
 const SingUp = () => {
-  const { register, handleSubmit } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
   const [mensaje, setmensaje] = useState({});
 
   const { signup } = useAuth();
@@ -58,37 +63,69 @@ const SingUp = () => {
                 onSubmit={handleSubmit(onSubmit)}
                 className="flex flex-col w-full"
               >
-                <Label text="Nombre" />
-                <Input type="text" placeholder="Juan" {...register("nombre")} />
-                <Label text="Apellido" />
+                <div className="w-full flex justify-between">
+                  <Label text="Nombre" />
+                  {errors?.nombre && (
+                    <AlertText text="El nombre es obligatorio" />
+                  )}
+                </div>
+                <Input
+                  type="text"
+                  placeholder="Juan"
+                  {...register("nombre", { required: true })}
+                />
+                <div className="w-full flex justify-between">
+                  <Label text="Apellido" />
+                  {errors?.apellido && (
+                    <AlertText text="El apellido es obligatorio" />
+                  )}
+                </div>
                 <Input
                   type="text"
                   placeholder="Perez"
-                  {...register("apellido")}
+                  {...register("apellido", { required: true })}
                 />
-                <Label text="Email" />
+                <div className="w-full flex justify-between">
+                  <Label text="Email" />
+                  {errors?.email && <AlertText text="El email es obligatorio" />}
+                </div>
                 <Input
                   type="email"
                   placeholder="JuanPerez@gmail.com"
-                  {...register("email")}
+                  {...register("email", { required: true })}
                 />
-                <Label text="placa del vehiculo" />
+                <div className="w-full flex justify-between">
+                  <Label text="placa del vehiculo" />
+                  {errors?.placa_vehiculo && (
+                    <AlertText text="La placa es obligatoria" />
+                  )}
+                </div>
                 <Input
                   type="text"
                   placeholder="AAC-424"
-                  {...register("placa_vehiculo")}
+                  {...register("placa_vehiculo", { required: true })}
                 />
-                <Label text="Telefono" />
+                <div className="w-full flex justify-between">
+                  <Label text="Telefono" />
+                  {errors?.telefono && (
+                    <AlertText text="El telefono es obligatorio" />
+                  )}
+                </div>
                 <Input
                   type="number"
                   placeholder="123456789"
-                  {...register("telefono")}
+                  {...register("telefono", { required: true })}
                 />
-                <Label text="Contraseña" />
+                <div className="w-full flex justify-between">
+                  <Label text="Contraseña" />
+                  {errors?.password && (
+                    <AlertText text="La contraseña es obligatoria" />
+                  )}
+                </div>
                 <Input
                   type="password"
                   placeholder="***********"
-                  {...register("password")}
+                  {...register("password", { required: true })}
                 />
                 <Button type="submit">Registrarse</Button>
                 <div className="flex flex-col gap-2 my-4">

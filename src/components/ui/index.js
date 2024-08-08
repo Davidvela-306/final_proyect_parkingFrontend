@@ -1,4 +1,5 @@
 export { Mensaje } from "./Mensaje";
+export { AlertText } from "./AlertText";
 export { LogoTitle } from "./LogoTitle";
 export { Input } from "./Input";
 export { Label } from "./Label";

@@ -1,5 +1,6 @@
 import { useForm } from "react-hook-form";
 import { useState, useEffect } from "react";
+import { AlertText } from "../components/ui";
 import { useAuth } from "../context/AuthContext";
 import NavBar from "../components/NavBar";
 import {
@@ -13,7 +14,12 @@ import {
 } from "../components/ui";
 
 const Login = () => {
-  const { register, handleSubmit, watch } = useForm();
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm();
   const [mensaje, setMensaje] = useState({});
   const { signin, setRol } = useAuth();
 
@@ -62,7 +68,10 @@ const Login = () => {
                 onSubmit={handleSubmit(onSubmit)}
                 className="flex flex-col w-full"
               >
-                <Label text="Rol" />
+                <div className="w-full flex justify-between">
+                  <Label text="Rol" />
+                  {errors.rol && <AlertText text="Rol es obligatorio" />}
+                </div>
                 <select
                   className={`w-full p-1 rounded-md ${
                     watch("rol") ? "text-black" : "text-slate-400"
@@ -77,14 +86,21 @@ const Login = () => {
                   <option value="Guardia">Guardia</option>
                 </select>
                 <br />
-                <Label text="Email" />
+                <div className="w-full flex justify-between">
+                  <Label text="Email" />
+                  {errors.email && <AlertText text="El email es obligatorio" />}
+                </div>
                 <Input
                   type="email"
                   placeholder="JuanPerez@gmail.com"
                   {...register("email", { required: true })}
                 />
-
-                <Label text="Contraseña" />
+                <div className="w-full flex justify-between">
+                  <Label text="Contraseña" />
+                  {errors.password && (
+                    <AlertText text="La contraseña es obligatoria" />
+                  )}
+                </div>
                 <Input
                   type="password"
                   placeholder="***********"
