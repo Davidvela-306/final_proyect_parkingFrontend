@@ -17,10 +17,12 @@ Administrador:
 
 - email: admin@admin.com
 - password: Admin.123
-  Guardia:
+  
+Guardia:
 - email: guardia@guardia.com
 - password: Guardia.123
-  Usuario:
+
+Usuario:
 - email: davidvela306edu@gmail.com
 - password: Usuario.123
 
