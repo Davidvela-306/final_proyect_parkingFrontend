@@ -17,15 +17,16 @@ export const useAuth = () => {
 };
 
 export function AuthProvider({ children }) {
+  const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [isAuth, setIsAuth] = useState(false);
   const [rol, setRol] = useState(null);
   const [token, setToken] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const setUserData = (userData, token) => {
-    if (userData && token) {
+
+  const setUserData = (userData, thisToken) => {
+    if (userData && thisToken) {
       localStorage.setItem("userData", JSON.stringify(userData));
-      localStorage.setItem("token", token);
+      localStorage.setItem("token", thisToken);
       setUser(userData);
       setIsAuth(true);
       setRol(userData.rol || null);
@@ -51,11 +52,17 @@ export function AuthProvider({ children }) {
         throw new Error("Rol no valido");
       }
 
-      const { nombre, apellido, telefono, token, _id, email } = response.data;
+      const {
+        nombre,
+        apellido,
+        telefono,
+        token: thisToken,
+        _id,
+        email,
+      } = response.data;
       const userData = { nombre, apellido, telefono, _id, email, rol };
-      setUserData(userData, token);
-      setToken(token);
-
+      setUserData(userData, thisToken);
+      setToken(thisToken);
       return response;
     } catch (error) {
       setUserData(null, null);
@@ -65,9 +72,10 @@ export function AuthProvider({ children }) {
   };
   const loadUserFromLocalStorage = () => {
     const userData = localStorage.getItem("userData");
-    const token = localStorage.getItem("token");
-    if (userData && token) {
+    const thisToken = localStorage.getItem("token");
+    if (userData && thisToken) {
       const parsedUser = JSON.parse(userData);
+      setToken(thisToken);
       setUser(parsedUser);
       setIsAuth(true);
       setRol(parsedUser.rol || null);
@@ -76,7 +84,6 @@ export function AuthProvider({ children }) {
       setIsAuth(false);
       setRol("Usuario");
     }
-    setLoading(false);
   };
 
   const signup = async (data) => {
@@ -87,7 +94,7 @@ export function AuthProvider({ children }) {
       throw error;
     }
   };
-  const navigate = useNavigate();
+
   const signout = async () => {
     localStorage.removeItem("userData");
     localStorage.removeItem("token");
@@ -102,6 +109,12 @@ export function AuthProvider({ children }) {
     loadUserFromLocalStorage();
   }, []);
 
+  console.log(
+    "\x1b[31m%s\x1b[0m",
+    "srccontextAuthContext.jsx:112 token",
+    token
+  );
+  console.log("%csrccontextAuthContext.jsx:113 user:", "color: #26bfa5;", user);
   return (
     <AuthContext.Provider
       value={{
@@ -112,7 +125,6 @@ export function AuthProvider({ children }) {
         signup,
         signin,
         signout,
-        loading,
         token,
         setToken,
       }}

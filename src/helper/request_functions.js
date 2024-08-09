@@ -1,19 +1,37 @@
 /* fetchGet, fetchPost, fetchPut, fetchDelete */
-async function fetchPost(baseUrl, route, postData) {
-  const response = await baseUrl.post(route, postData);
-  return response;
-}
-async function fetchGet(baseUrl, route) {
-  const response = await baseUrl.get(route);
+async function fetchPost(baseUrl, route, postData, token) {
+  const response = await baseUrl.post(route, postData, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
   return response;
 }
 
-async function fetchPut(baseUrl, route, putData) {
-  const response = await baseUrl.put(route, putData);
+async function fetchGet(baseUrl, route, token) {
+  const response = await baseUrl.get(route, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
   return response;
 }
-async function fetchDelete(baseUrl, route) {
-  const response = await baseUrl.delete(route);
+
+async function fetchPut(baseUrl, route, putData, token) {
+  const response = await baseUrl.put(route, putData, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return response;
+}
+
+async function fetchDelete(baseUrl, route, token) {
+  const response = await baseUrl.delete(route, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
   return response;
 }
 

@@ -1,5 +1,4 @@
 export const Mensaje = ({ children, tipo }) => {
-  console.log(tipo);
 
   return (
     <div

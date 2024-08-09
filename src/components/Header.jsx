@@ -3,7 +3,6 @@ import { useAuth } from "../context/AuthContext";
 
 const Header = () => {
   const { signout } = useAuth();
-  console.log(signout);
   return (
     <>
       <LogoTitle
