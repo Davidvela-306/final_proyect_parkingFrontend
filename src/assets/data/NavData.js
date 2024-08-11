@@ -45,6 +45,11 @@ const usuarioNavData = [
     title: "Perfil",
     path: "/usuarios/perfil",
   },
+  {
+    id: 2,
+    title: "Parqueaderos",
+    path: "/usuarios/parquedero",
+  },
 ];
 
 export { GeneralNavData, adminNavData, guardiaNavData, usuarioNavData };

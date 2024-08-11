@@ -29,6 +29,7 @@ import PerfilUsuariosPage from "./pages/Usuarios/PerfilUsuariosPage";
 import NotFound from "./pages/NotFound";
 
 import "./index.css";
+import ParqueaderosUsuariosPage from "./pages/Usuarios/ParqueaderoU";
 
 function App() {
   const { isAuth, rol } = useAuth();
@@ -143,6 +144,15 @@ function App() {
               element={
                 <UsuarioLayout>
                   <PerfilUsuariosPage />
+                </UsuarioLayout>
+              }
+            />
+
+            <Route
+              path="/usuarios/parquedero"
+              element={
+                <UsuarioLayout>
+                  <ParqueaderosUsuariosPage />
                 </UsuarioLayout>
               }
             />
