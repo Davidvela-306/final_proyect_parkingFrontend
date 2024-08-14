@@ -35,5 +35,15 @@ async function fetchDelete(baseUrl, route, token) {
   });
   return response;
 }
+/* patch */
 
-export { fetchGet, fetchPost, fetchPut, fetchDelete };
+async function fetchPatch(baseUrl, route, patchData, token) {
+  const response = await baseUrl.patch(route, patchData, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return response;
+}
+
+export { fetchGet, fetchPost, fetchPut, fetchDelete, fetchPatch };
