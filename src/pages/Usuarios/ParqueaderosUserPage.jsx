@@ -2,7 +2,7 @@ import Espacios from "../../components/ui/Parqueadero";
 import { useState, useEffect } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { fetchGet } from "../../helper/request_functions";
-import { baseParqueaderos } from "../../helper/instances_routes";
+import { baseUsuarios } from "../../helper/instances_routes";
 const ParqueaderosUserPage = () => {
   const { token } = useAuth();
   const [parkingDescription, setparkingDescription] = useState([]);
@@ -15,7 +15,7 @@ const ParqueaderosUserPage = () => {
   const getParking = async () => {
     try {
       const response = await fetchGet(
-        baseParqueaderos,
+        baseUsuarios,
         "/parqueaderos-disponibles",
         token
       );
@@ -45,23 +45,19 @@ const ParqueaderosUserPage = () => {
         <>
           <div
             key={parking.id}
-            className="p-10 border-solid border-2 border-sky-700 rounded-lg m-3 flex"
+            className="p-10 border-solid border-2 border-sky-700 rounded-lg m-3 "
           >
             <p>
-              <span className="font-bold">Numero: </span>
-              {parking.numero}
+              <span className="font-bold">Nombre: </span>
+              {parking.nombre}
             </p>
             <p>
-              <span>Numero: </span>
-              {parking.bloque}
+              <span>Descripcion: </span>
+              {parking.descripcion}
             </p>
             <p>
-              <span>Numero: </span>
+              <span>Tipo: </span>
               {parking.tipo}
-            </p>
-            <p>
-              <span>Numero: </span>
-              {parking.numero}
             </p>
           </div>
           <div>

@@ -26,7 +26,7 @@ const Guardias = () => {
 
   return (
     <>
-      <h1 className="text-4xl font-bold mb-10 text-azul-10">Usuarios</h1>
+      <h1 className="text-4xl font-bold mb-10 text-azul-10">Guardias</h1>
       <div className=" h-[90vh]">
         <table className="min-w-full bg-white border border-gray-300 ">
           <thead className="bg-azul-20 text-white border-solid border-t-2 border-gray-300 ">
