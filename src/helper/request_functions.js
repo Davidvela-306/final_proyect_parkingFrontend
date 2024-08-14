@@ -21,6 +21,7 @@ async function fetchPut(baseUrl, route, putData, token) {
   const response = await baseUrl.put(route, putData, {
     headers: {
       Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json', 
     },
   });
   return response;

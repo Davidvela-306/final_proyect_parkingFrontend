@@ -13,14 +13,16 @@ const ActualizarContraseña = () => {
   } = useForm();
   const onSubmit = async (values) => {
     try {
+      console.log("values", values);
+      const jsonData = JSON.stringify(values); 
+      console.log("jsonData", jsonData);
       const response = await fetchPut(
         baseUsuarios,
         `/actualizar-password`,
-        values,
+        jsonData,
         token
       );
       console.log(response);
-      setToken(token);
     } catch (error) {
       console.error(error);
     }
@@ -45,7 +47,7 @@ const ActualizarContraseña = () => {
         <Input
           type="contraseña"
           placeholder="NuevaContraseña"
-          {...register("nuevaPassword", { required: true })}
+          {...register("nuevoPassword", { required: true })}
         />
         <Button type="submit">Actualizar</Button>
       </form>
