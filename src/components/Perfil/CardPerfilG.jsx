@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { fetchGet } from "../../helper/request_functions";
-import { baseUsuarios } from "../../helper/instances_routes";
-export const CardPerfilU = () => {
+import { baseGuardias } from "../../helper/instances_routes";
+export const CardPerfilG = () => {
   const { token } = useAuth();
   const [user, setUser] = useState([]);
   console.log(token);
@@ -10,17 +10,16 @@ export const CardPerfilU = () => {
   useEffect(() => {
     getUser();
   }, [token]);
-
   const getUser = async () => {
     try {
-      const response = await fetchGet(baseUsuarios, "/perfil", token);
+      const response = await fetchGet(baseGuardias, "/perfil", token);
       setUser(response.data);
     } catch (error) {
       console.error(error);
     }
   };
   console.log("user: ", user);
-  const { nombre, apellido, email, placa_vehiculo, telefono } = user;
+  const { nombre, apellido, cedula, email, telefono } = user;
   return (
     <div
       className="border border-slate-200 p-5 
@@ -33,10 +32,10 @@ export const CardPerfilU = () => {
         <p>Apellido: {apellido} </p>
       </div>
       <div className="self-start">
-        <p>Email: {email}</p>
+        <p>Cedula: {cedula} </p>
       </div>
       <div className="self-start">
-        <p>Placa_vehiculo: {placa_vehiculo} </p>
+        <p>Email: {email} </p>
       </div>
       <div className="self-start">
         <p>Telefono: {telefono} </p>
