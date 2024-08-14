@@ -25,7 +25,7 @@ import PerfilGuardiasPage from "./pages/Guardias/PerfilGuardiasPage";
 import ParqueaderosGuardiasPage from "./pages/Guardias/ParqueaderosGuardiasPage";
 
 import PerfilUsuariosPage from "./pages/Usuarios/PerfilUsuariosPage";
-import ParqueaderosUsuariosPage from "./pages/Usuarios/ParqueaderoU";
+import ParqueaderosUsuariosPage from "./pages/Usuarios/ParqueaderosUserPage";
 
 import NotFound from "./pages/NotFound";
 
