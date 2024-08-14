@@ -25,11 +25,11 @@ import PerfilGuardiasPage from "./pages/Guardias/PerfilGuardiasPage";
 import ParqueaderosGuardiasPage from "./pages/Guardias/ParqueaderosGuardiasPage";
 
 import PerfilUsuariosPage from "./pages/Usuarios/PerfilUsuariosPage";
+import ParqueaderosUsuariosPage from "./pages/Usuarios/ParqueaderoU";
 
 import NotFound from "./pages/NotFound";
 
 import "./index.css";
-import ParqueaderosUsuariosPage from "./pages/Usuarios/ParqueaderoU";
 
 function App() {
   const { isAuth, rol } = useAuth();

@@ -1,47 +1,61 @@
-const Espacios = () => {
+import { useState, useEffect } from "react";
+import { useAuth } from "../../context/AuthContext";
+
+export const Espacios = () => {
+  const { token } = useAuth();
+  const [data, setData] = useState([]); // Nuevo estado para los datos de Arduino
+
+  useEffect(() => {
+    getUsers();
+  }, [token]);
+
+  const getUsers = async () => {
+    try {
+      // Simulación de datos de Arduino
+      const simulatedData = [
+        { espacio: "Espacio 1", disponibilidad: 1 },
+        { espacio: "Espacio 2", disponibilidad: 0 },
+        { espacio: "Espacio 3", disponibilidad: 1 },
+        { espacio: "Espacio 4", disponibilidad: 0 },
+        { espacio: "Espacio 5", disponibilidad: 0 },
+        { espacio: "Espacio 6", disponibilidad: 0 },
+        { espacio: "Espacio 7", disponibilidad: 0 },
+        { espacio: "Espacio 8", disponibilidad: 0 },
+      ];
+      setData(simulatedData);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
-    <table className="w-full mt-5 table-auto shadow-lg bg-white">
-      <thead className="bg-gray-800 text-slate-400">
-        <tr>
-          <th className="p-2">Espacios</th>
-          <th className="p-2">Disponible</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr className="border-b hover:bg-gray-300 text-center">
-          <td className="py-2">Espacio 1</td>
-          <td className="py-2">Sí</td>
-        </tr>
-        <tr className="border-b hover:bg-gray-300 text-center">
-          <td className="py-2">Espacio 2</td>
-          <td className="py-2">No</td>
-        </tr>
-        <tr className="border-b hover:bg-gray-300 text-center">
-          <td className="py-2">Espacio 3</td>
-          <td className="py-2">Sí</td>
-        </tr>
-        <tr className="border-b hover:bg-gray-300 text-center">
-          <td className="py-2">Espacio 4</td>
-          <td className="py-2">No</td>
-        </tr>
-        <tr className="border-b hover:bg-gray-300 text-center">
-          <td className="py-2">Espacio 5</td>
-          <td className="py-2">No</td>
-        </tr>
-        <tr className="border-b hover:bg-gray-300 text-center">
-          <td className="py-2">Espacio 6</td>
-          <td className="py-2">No</td>
-        </tr>
-        <tr className="border-b hover:bg-gray-300 text-center">
-          <td className="py-2">Espacio 7</td>
-          <td className="py-2">No</td>
-        </tr>
-        <tr className="border-b hover:bg-gray-300 text-center">
-          <td className="py-2">Espacio 8</td>
-          <td className="py-2">No</td>
-        </tr>
-      </tbody>
-    </table>
+    <>
+      {/* Tabla de Espacios y Disponibilidad */}
+      <div className="mt-10">
+        <h2 className="text-2xl ">Espacios y Disponibilidad</h2>
+        <table className="min-w-full border-collapse border border-slate-950 mt-4">
+          <thead>
+            <tr>
+              <th className="border border-slate-200 p-2">Espacios</th>
+              <th className="border border-slate-200 p-2">Disponibilidad</th>
+            </tr>
+          </thead>
+          <tbody>
+            {data.map((item, index) => (
+              <tr
+                key={index}
+                className="border-b hover:bg-gray-300 text-center"
+              >
+                <td className="py-2">{item.espacio}</td>
+                <td className="py-2">
+                  {item.disponibilidad === 1 ? "Sí" : "No"}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </>
   );
 };
 

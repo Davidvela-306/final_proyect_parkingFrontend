@@ -19,7 +19,7 @@ const Usuarios = () => {
     }
   };
   console.log(
-    "%csrcpagesAdministradorUsuariosAdminPage.jsx:21 users",
+    "%csrcpagesAdministradorUsuariosAdminPage.jsx:21 guardias",
     "color: white; background-color: #26bfa5;",
     users
   );
