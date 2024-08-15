@@ -1,4 +1,4 @@
-import Espacios from "../../components/ui/Parqueadero";
+import Espacios from "../../components/ui/Espacios";
 import { useState, useEffect } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { fetchGet } from "../../helper/request_functions";
