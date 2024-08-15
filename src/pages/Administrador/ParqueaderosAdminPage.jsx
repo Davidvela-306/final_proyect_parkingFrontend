@@ -2,10 +2,12 @@ import { useState, useEffect } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { fetchGet, fetchPatch } from "../../helper/request_functions";
 import { baseParqueaderos } from "../../helper/instances_routes";
+import Espacios from "../../components/ui/Espacios";
 
 const ParqueaderoAdminPage = () => {
   const { token } = useAuth();
   const [parkingPlaces, setParkingPlaces] = useState([]);
+  const [selectedParkingPlace, setSelectedParkingPlace] = useState(null);
 
   useEffect(() => {
     getParking();
@@ -16,7 +18,7 @@ const ParqueaderoAdminPage = () => {
       const response = await fetchGet(baseParqueaderos, "/", token);
       setParkingPlaces(response.data);
     } catch (error) {
-      console.error(error);
+      console.error("Error fetching parking places:", error);
     }
   };
 
@@ -26,7 +28,7 @@ const ParqueaderoAdminPage = () => {
         const response = await fetchPatch(
           baseParqueaderos,
           `/${id}`,
-          { estado: !estado }, // Asegúrate de enviar un objeto con el nuevo estado
+          { estado: !estado },
           token
         );
         console.log("response", response);
@@ -39,16 +41,20 @@ const ParqueaderoAdminPage = () => {
         );
       }
     } catch (error) {
-      console.error(error);
+      console.error("Error updating parking place:", error);
     }
+  };
+
+  const handleShowEspacios = (parkingPlace) => {
+    setSelectedParkingPlace(parkingPlace);
   };
 
   return (
     <>
       <h1 className="text-4xl font-bold mb-10 text-azul-10">Parqueaderos</h1>
-      <div className=" h-[90vh]">
-        <table className="min-w-full bg-white border border-gray-300 ">
-          <thead className="bg-azul-20 text-white border-solid border-t-2 border-gray-300 ">
+      <div className="h-[90vh]">
+        <table className="min-w-full bg-white border border-gray-300">
+          <thead className="bg-azul-20 text-white border-solid border-t-2 border-gray-300">
             <tr>
               <th className="px-4 py-2 text-left font-semibold">Nombre</th>
               <th className="px-4 py-2 text-left font-semibold">Descripción</th>
@@ -58,6 +64,9 @@ const ParqueaderoAdminPage = () => {
               <th className="px-4 py-2 text-left font-semibold">Estado</th>
               <th className="px-4 py-2 text-left font-semibold">
                 Cambiar Estado
+              </th>
+              <th className="px-4 py-2 text-left font-semibold">
+                Ver espacios
               </th>
             </tr>
           </thead>
@@ -100,10 +109,26 @@ const ParqueaderoAdminPage = () => {
                     Cambiar estado
                   </button>
                 </td>
+                <td className="px-4 py-2 border-b border-gray-300">
+                  <button
+                    type="button"
+                    onClick={() => handleShowEspacios(parkingPlace)}
+                    className="bg-green-700 hover:bg-green-500 text-white font-bold py-1 px-3 rounded"
+                  >
+                    Espacios disponibles
+                  </button>
+                </td>
               </tr>
             ))}
           </tbody>
         </table>
+
+        {/* Mostrar Espacios solo si se ha seleccionado un parqueadero */}
+        {selectedParkingPlace && (
+          <div className="w-full  flex justify-center">
+            <Espacios parkingPlace={selectedParkingPlace} />
+          </div>
+        )}
       </div>
     </>
   );
