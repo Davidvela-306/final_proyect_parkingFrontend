@@ -27,9 +27,9 @@ const PerfilUsuarios = () => {
 
       <div>
         <img
-          src="https://cdn-icons-png.flaticon.com/512/4715/4715329.png"
+          src="https://cdn-icons-png.flaticon.com/128/8931/8931935.png"
           alt="img-client"
-          className="m-auto"
+          className="m-auto pb-10"
           width={120}
           height={120}
         />

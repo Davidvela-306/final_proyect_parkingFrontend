@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import io from "socket.io-client";
 
-const Espacios = () => {
+const Espacios = ({ onAllOccupied }) => {
   const [estado1, setEstado1] = useState(null);
   const [estado2, setEstado2] = useState(null);
   const [estado3, setEstado3] = useState(null);
@@ -10,10 +10,9 @@ const Espacios = () => {
   const [estado6, setEstado6] = useState(null);
 
   useEffect(() => {
-    const socket = io("http://localhost:3000"); // Ajusta la URL según tu configuración
+    const socket = io("http://localhost:3000");
 
     socket.on("serialData", (data) => {
-      // Procesar cada línea de datos
       const lines = data.split("\n");
       lines.forEach((line) => {
         const [estado, valor] = line.split(":");
@@ -42,10 +41,21 @@ const Espacios = () => {
       });
     });
 
+    // Verifica si todos los espacios están ocupados o si hay alguno disponible
+    const allOccupied =
+      parseInt(estado1) === 1 &&
+      parseInt(estado2) === 1 &&
+      parseInt(estado3) === 1 &&
+      parseInt(estado4) === 1 &&
+      parseInt(estado5) === 1 &&
+      parseInt(estado6) === 1;
+
+    onAllOccupied(allOccupied);
+
     return () => {
       socket.disconnect();
     };
-  }, []);
+  }, [estado1, estado2, estado3, estado4, estado5, estado6, onAllOccupied]);
 
   return (
     <>
@@ -57,78 +67,24 @@ const Espacios = () => {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td className="px-4 py-2 border text-center">Lugar 1</td>
-            <td
-              className={`${
-                parseInt(estado1) === 1
-                  ? "px-4 py-2 border text-red-600 font-bold text-center"
-                  : "px-4 py-2 border text-green-600 font-bold text-center"
-              }`}
-            >
-              {parseInt(estado1) === 1 ? "No disponible" : "Disponible"}
-            </td>
-          </tr>
-          <tr>
-            <td className="px-4 py-2 border text-center">Lugar 2</td>
-            <td
-              className={`${
-                parseInt(estado2) === 1
-                  ? "px-4 py-2 border text-red-600 font-bold text-center"
-                  : "px-4 py-2 border text-green-600 font-bold text-center"
-              }`}
-            >
-              {parseInt(estado2) === 1 ? "No disponible" : "Disponible"}
-            </td>
-          </tr>
-          <tr>
-            <td className="px-4 py-2 border text-center">Lugar 3</td>
-            <td
-              className={`${
-                parseInt(estado3) === 1
-                  ? "px-4 py-2 border text-red-600 font-bold text-center"
-                  : "px-4 py-2 border text-green-600 font-bold text-center"
-              }`}
-            >
-              {parseInt(estado3) === 1 ? "No disponible" : "Disponible"}
-            </td>
-          </tr>
-          <tr>
-            <td className="px-4 py-2 border text-center">Lugar 4</td>
-            <td
-              className={`${
-                parseInt(estado4) === 1
-                  ? "px-4 py-2 border text-red-600 font-bold text-center"
-                  : "px-4 py-2 border text-green-600 font-bold text-center"
-              }`}
-            >
-              {parseInt(estado4) === 1 ? "No disponible" : "Disponible"}
-            </td>
-          </tr>
-          <tr>
-            <td className="px-4 py-2 border text-center">Lugar 5</td>
-            <td
-              className={`${
-                parseInt(estado5) === 1
-                  ? "px-4 py-2 border text-red-600 font-bold text-center"
-                  : "px-4 py-2 border text-green-600 font-bold text-center"
-              }`}
-            >
-              {parseInt(estado5) === 1 ? "No disponible" : "Disponible"}
-            </td>
-          </tr>
-          <tr>
-            <td className="px-4 py-2 border text-center">Lugar 6</td>
-            <td
-              className={`${
-                parseInt(estado6) === 1
-                  ? "px-4 py-2 border text-red-600 font-bold text-center"
-                  : "px-4 py-2 border text-green-600 font-bold text-center"
-              }`}
-            >
-              {parseInt(estado6) === 1 ? "No disponible" : "Disponible"}
-            </td>
-          </tr>
+          {[estado1, estado2, estado3, estado4, estado5, estado6].map(
+            (estado, index) => (
+              <tr key={index}>
+                <td className="px-4 py-2 border text-center">
+                  Lugar {index + 1}
+                </td>
+                <td
+                  className={`${
+                    parseInt(estado) === 1
+                      ? "px-4 py-2 border text-red-600 font-bold text-center"
+                      : "px-4 py-2 border text-green-600 font-bold text-center"
+                  }`}
+                >
+                  {parseInt(estado) === 1 ? "No disponible" : "Disponible"}
+                </td>
+              </tr>
+            )
+          )}
         </tbody>
       </table>
     </>

@@ -117,13 +117,6 @@ const Login = () => {
                       text="Registrarse como usuario"
                     />
                   </span>
-                  <span className="flex gap-3 justify-end">
-                    <p>¿Olvidó su contraseña?</p>
-                    <CustomLink
-                      route="/RecoverPassword"
-                      text="Recuperar contraseña"
-                    />
-                  </span>
                 </div>
               </form>
             </Card>

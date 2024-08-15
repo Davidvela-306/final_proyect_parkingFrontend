@@ -5,7 +5,7 @@ import { Input, Button, Label } from "../../components/ui";
 import { fetchPut } from "../../helper/request_functions";
 import { baseUsuarios } from "../../helper/instances_routes";
 const FormularioU = () => {
-  const { user,token, setToken } = useAuth();
+  const { user, token, setToken } = useAuth();
   const {
     register,
     handleSubmit,
@@ -13,13 +13,16 @@ const FormularioU = () => {
   } = useForm();
   const onSubmit = async (values) => {
     try {
-      const response = await fetchPut(baseUsuarios,`/${user._id}`, values, token)
+      const response = await fetchPut(
+        baseUsuarios,
+        `/${user._id}`,
+        values,
+        token
+      );
       console.log(response);
-      setToken(token)
-      
+      setToken(token);
     } catch (error) {
       console.error(error);
-      
     }
   };
   return (
@@ -60,7 +63,7 @@ const FormularioU = () => {
           {errors.apellido && <AlertText text="El campo es obligatorio" />}
         </div>
         <Input
-          type="placa_vehiculo"
+          type="string"
           placeholder="AAA-222"
           {...register("placa_vehiculo", { required: true })}
         />
@@ -70,7 +73,7 @@ const FormularioU = () => {
           {errors.telefono && <AlertText text="El campo es obligatorio" />}
         </div>
         <Input
-          type="telefono"
+          type="number"
           placeholder="0999999999"
           {...register("telefono", { required: true })}
         />
