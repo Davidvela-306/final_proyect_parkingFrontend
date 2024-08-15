@@ -11,7 +11,7 @@ const ParqueaderoAdminPage = () => {
 
   useEffect(() => {
     getParking();
-  }, [token]);
+  }, []);
 
   const getParking = async () => {
     try {
@@ -22,31 +22,39 @@ const ParqueaderoAdminPage = () => {
     }
   };
 
-  const patchUser = async (id, nombre, estado) => {
-    try {
-      if (confirm(`¿Deseas cambiar el estado del parqueadero ${nombre}?`)) {
-        const response = await fetchPatch(
-          baseParqueaderos,
-          `/${id}`,
-          { estado: !estado },
-          token
-        );
-        console.log("response", response);
-
-        // Actualiza la lista de parqueaderos después de la actualización
-        setParkingPlaces((prevPlaces) =>
-          prevPlaces.map((place) =>
-            place._id === id ? { ...place, estado: !estado } : place
-          )
-        );
-      }
-    } catch (error) {
-      console.error("Error updating parking place:", error);
+  const handleShowEspacios = (parkingPlace) => {
+    if (selectedParkingPlace && selectedParkingPlace._id === parkingPlace._id) {
+      setSelectedParkingPlace(null);
+    } else {
+      setSelectedParkingPlace(parkingPlace);
     }
   };
 
-  const handleShowEspacios = (parkingPlace) => {
-    setSelectedParkingPlace(parkingPlace);
+  const handleAllOccupied = async (allOccupied) => {
+    if (selectedParkingPlace) {
+      // Actualiza el estado del parqueadero según el estado de los espacios
+      const nuevoEstado = !allOccupied;
+      try {
+        const objEstado = { estado: nuevoEstado };
+        const response = await fetchPatch(
+          baseParqueaderos,
+          `/${selectedParkingPlace._id}`,
+          objEstado,
+          token
+        );
+        if (response.status === 200) {
+          setParkingPlaces((prevPlaces) =>
+            prevPlaces.map((place) =>
+              place._id === selectedParkingPlace._id
+                ? { ...place, estado: nuevoEstado }
+                : place
+            )
+          );
+        }
+      } catch (error) {
+        console.error("Error updating parking place status:", error);
+      }
+    }
   };
 
   return (
@@ -62,12 +70,7 @@ const ParqueaderoAdminPage = () => {
               <th className="px-4 py-2 text-left font-semibold">Bloque</th>
               <th className="px-4 py-2 text-left font-semibold">Tipo</th>
               <th className="px-4 py-2 text-left font-semibold">Estado</th>
-              <th className="px-4 py-2 text-left font-semibold">
-                Cambiar Estado
-              </th>
-              <th className="px-4 py-2 text-left font-semibold">
-                Ver espacios
-              </th>
+              <th className="px-4 py-2 text-left font-semibold">Ver espacios</th>
             </tr>
           </thead>
           <tbody>
@@ -97,21 +100,6 @@ const ParqueaderoAdminPage = () => {
                 <td className="px-4 py-2 border-b border-gray-300">
                   <button
                     type="button"
-                    onClick={() =>
-                      patchUser(
-                        parkingPlace._id,
-                        parkingPlace.nombre,
-                        parkingPlace.estado
-                      )
-                    }
-                    className="bg-green-700 hover:bg-green-500 text-white font-bold py-1 px-3 rounded"
-                  >
-                    Cambiar estado
-                  </button>
-                </td>
-                <td className="px-4 py-2 border-b border-gray-300">
-                  <button
-                    type="button"
                     onClick={() => handleShowEspacios(parkingPlace)}
                     className="bg-green-700 hover:bg-green-500 text-white font-bold py-1 px-3 rounded"
                   >
@@ -125,8 +113,8 @@ const ParqueaderoAdminPage = () => {
 
         {/* Mostrar Espacios solo si se ha seleccionado un parqueadero */}
         {selectedParkingPlace && (
-          <div className="w-full  flex justify-center">
-            <Espacios parkingPlace={selectedParkingPlace} />
+          <div className="w-full flex justify-center">
+            <Espacios onAllOccupied={handleAllOccupied} />
           </div>
         )}
       </div>

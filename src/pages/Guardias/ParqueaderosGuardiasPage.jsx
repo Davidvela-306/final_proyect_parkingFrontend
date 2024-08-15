@@ -1,12 +1,13 @@
-import Espacios from "../../components/ui/Espacios";
 import { useState, useEffect } from "react";
 import { useAuth } from "../../context/AuthContext";
-import { fetchGet } from "../../helper/request_functions";
+import { fetchGet, fetchPatch } from "../../helper/request_functions";
 import { baseGuardias } from "../../helper/instances_routes";
-const ParqueaderosGuardiasPage = () => {
+import Espacios from "../../components/ui/Espacios";
+
+const ParqueaderoGuardiasPage = () => {
   const { token } = useAuth();
-  const [parkingDescription, setparkingDescription] = useState([]);
-  console.log(token);
+  const [parkingPlaces, setParkingPlaces] = useState([]);
+  const [selectedParkingPlace, setSelectedParkingPlace] = useState(null);
 
   useEffect(() => {
     getParking();
@@ -19,59 +20,112 @@ const ParqueaderosGuardiasPage = () => {
         "/parqueaderos-disponibles",
         token
       );
-      console.log(response.data);
-      setparkingDescription(response.data);
+      setParkingPlaces(response.data);
     } catch (error) {
-      console.error(error);
+      console.error("Error fetching parking places:", error);
     }
   };
-  console.log(
-    "%csrcpagesAdministradorUsuariosAdminPage.jsx:21 parkingDescription",
-    "color: white; background-color: #26bfa5;",
-    parkingDescription
-  );
+
+  const handleShowEspacios = (parkingPlace) => {
+    if (selectedParkingPlace && selectedParkingPlace._id === parkingPlace._id) {
+      setSelectedParkingPlace(null);
+    } else {
+      setSelectedParkingPlace(parkingPlace);
+    }
+  };
+
+  const handleAllOccupied = async (allOccupied) => {
+    if (selectedParkingPlace) {
+      // Actualiza el estado del parqueadero según el estado de los espacios
+      const nuevoEstado = !allOccupied;
+      try {
+        const objEstado = { estado: nuevoEstado };
+        const response = await fetchPatch(
+          baseGuardias,
+          `/${selectedParkingPlace._id}`,
+          objEstado,
+          token
+        );
+        if (response.status === 200) {
+          setParkingPlaces((prevPlaces) =>
+            prevPlaces.map((place) =>
+              place._id === selectedParkingPlace._id
+                ? { ...place, estado: nuevoEstado }
+                : place
+            )
+          );
+        }
+      } catch (error) {
+        console.error("Error updating parking place status:", error);
+      }
+    }
+  };
 
   return (
-    <div className="max-w-md mx-auto">
-      <h1 className="font-black text-4xl text-center text-gray-500">
-        Parqueadero
-      </h1>
-      <hr className="my-4" />
+    <>
+      <h1 className="text-4xl font-bold mb-10 text-azul-10">Parqueaderos</h1>
+      <div className="h-[90vh]">
+        <table className="min-w-full bg-white border border-gray-300">
+          <thead className="bg-azul-20 text-white border-solid border-t-2 border-gray-300">
+            <tr>
+              <th className="px-4 py-2 text-left font-semibold">Nombre</th>
+              <th className="px-4 py-2 text-left font-semibold">Descripción</th>
+              <th className="px-4 py-2 text-left font-semibold">Planta</th>
+              <th className="px-4 py-2 text-left font-semibold">Bloque</th>
+              <th className="px-4 py-2 text-left font-semibold">Tipo</th>
+              <th className="px-4 py-2 text-left font-semibold">Estado</th>
+              <th className="px-4 py-2 text-left font-semibold">
+                Ver espacios
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {parkingPlaces.map((parkingPlace) => (
+              <tr
+                className="hover:bg-gray-100 border-solid border-t-2 border-gray-300"
+                key={parkingPlace._id}
+              >
+                <td className="px-4 py-2 border-b border-gray-300">
+                  {parkingPlace.nombre}
+                </td>
+                <td className="px-4 py-2 border-b border-gray-300">
+                  {parkingPlace.description}
+                </td>
+                <td className="px-4 py-2 border-b border-gray-300">
+                  {parkingPlace.planta}
+                </td>
+                <td className="px-4 py-2 border-b border-gray-300">
+                  {parkingPlace.bloque}
+                </td>
+                <td className="px-4 py-2 border-b border-gray-300">
+                  {parkingPlace.tipo}
+                </td>
+                <td className="px-4 py-2 border-b border-gray-300">
+                  {parkingPlace.estado ? "Disponible" : "No disponible"}
+                </td>
+                <td className="px-4 py-2 border-b border-gray-300">
+                  <button
+                    type="button"
+                    onClick={() => handleShowEspacios(parkingPlace)}
+                    className="bg-green-700 hover:bg-green-500 text-white font-bold py-1 px-3 rounded"
+                  >
+                    Espacios disponibles
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
 
-      <p className="text-2xl text-center">Parqueadero ESFOT</p>
-
-      {/* Mostrar la lista de parqueaderos */}
-      {parkingDescription.map((parking) => (
-        <>
-          <div
-            key={parking.id}
-            className="p-10 border-solid border-2 border-sky-700 rounded-lg m-3 flex"
-          >
-            <p>
-              <span className="font-bold">Numero: </span>
-              {parking.numero}
-            </p>
-            <p>
-              <span>Numero: </span>
-              {parking.bloque}
-            </p>
-            <p>
-              <span>Numero: </span>
-              {parking.tipo}
-            </p>
-            <p>
-              <span>Numero: </span>
-              {parking.numero}
-            </p>
+        {/* Mostrar Espacios solo si se ha seleccionado un parqueadero */}
+        {selectedParkingPlace && (
+          <div className="w-full flex justify-center">
+            <Espacios onAllOccupied={handleAllOccupied} />
           </div>
-          <div>
-            <Espacios />
-            <hr className="border-solid border-2 border-azul-20 mb-9" />
-          </div>
-        </>
-      ))}
-    </div>
+        )}
+      </div>
+    </>
   );
 };
 
-export default ParqueaderosGuardiasPage;
+export default ParqueaderoGuardiasPage;

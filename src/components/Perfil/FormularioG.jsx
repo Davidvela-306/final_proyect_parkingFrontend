@@ -53,7 +53,7 @@ const FormularioG = () => {
           {errors.cedula && <AlertText text="El campo es obligatorio" />}
         </div>
         <Input
-          type="cedula"
+          type="number"
           placeholder="1717171717"
           {...register("cedula", { required: true })}
         />
@@ -73,7 +73,7 @@ const FormularioG = () => {
           {errors.telefono && <AlertText text="El campo es obligatorio" />}
         </div>
         <Input
-          type="telefono"
+          type="number"
           placeholder="0999999999"
           {...register("telefono", { required: true })}
         />
